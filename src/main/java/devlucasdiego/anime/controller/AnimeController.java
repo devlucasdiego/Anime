@@ -1,8 +1,10 @@
 package devlucasdiego.anime.controller;
 
 import devlucasdiego.anime.domain.Anime;
+import devlucasdiego.anime.service.AnimeService;
 import devlucasdiego.anime.util.DateUtil;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,15 +14,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("anime")
+@RequestMapping("animes")
 @Log4j2
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AnimeController {
-    private DateUtil dateUtil;
+    private final DateUtil dateUtil;
+    private final AnimeService animeService;
 
-    @GetMapping(path = "list")
+    @GetMapping
     public List<Anime> list() {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return List.of(new Anime("Steins Gate"), new Anime("Demon Slayer"), new Anime("Cowboy Bebop"));
+        return AnimeService.listAll();
     }
 }
